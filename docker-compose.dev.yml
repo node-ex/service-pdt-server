@@ -7,24 +7,31 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+      target: dev_
     entrypoint: docker-entrypoint.sh
     command: app
     init: true
-    # ports:
-    #   - target: 5432
-    #     published: 5432
-    #     protocol: tcp
-    #     mode: host
+    ports:
+        # container
+      - target: 3000
+        # host
+        published: 3000
+        protocol: tcp
+        mode: host
     networks:
       - shared
     volumes:
       - type: bind
         source: ./data
         target: /data
+      - type: bind
+        source: ./src
+        target: /app/src
     env_file:
       - ./.env
     healthcheck:
-      test: ["CMD", "docker-healthcheck"]
+      # test: ["CMD", "docker-healthcheck"]
+      test: ["CMD", "curl", "--fail", "http://localhost:3000/check"]
       interval: 2m
       timeout: 10s
       retries: 3

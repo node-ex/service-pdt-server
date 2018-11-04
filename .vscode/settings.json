@@ -1,0 +1,72 @@
+{
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": false,
+  "files.associations": {
+    ".babelrc": "jsonc",
+    ".eslintrc": "jsonc"
+  },
+  "files.exclude": {
+    "**/*.log": true,
+    "**/*.log*": true,
+    "**/dist": true,
+    "**/coverage": true
+  },
+  "html.suggest.angular1": false,
+  "html.suggest.ionic": false,
+  "html.format.enable": false,
+  "json.format.enable": false,
+  "javascript.validate.enable": false,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "[javascript]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[html]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[css]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[scss]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[vue]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "eslint.enable": true,
+  "eslint.run": "onType",
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    }
+  ],
+  "stylelint.enable": true,
+  "stylelint.configOverrides": {
+    "ignoreFiles": ["*", "!*.css", "!*.scss"]
+  },
+  "prettier.disableLanguages": [],
+  "prettier.eslintIntegration": true,
+  "prettier.stylelintIntegration": true
+}

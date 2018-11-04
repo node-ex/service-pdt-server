@@ -17,3 +17,5 @@ docker-compose \
     --force-rm \
     --no-cache \
     $(sed 's/^/--build-arg /g' .env | tr '\n' ' ')
+
+# --project-name service-pdt-server

@@ -32,7 +32,7 @@ if [ "$*" = 'app' ]; then
         --port 5432 \
         --username postgres \
         --dbname gis \
-        --command 'CREATE EXTENSION postgis; CREATE EXTENSION hstore;'
+        --command 'CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology; CREATE EXTENSION hstore;'
     echo '>>> Importing data into PostgreSQL.'
     osm2pgsql \
         --host "${DOCKER_CONTAINER_POSTGIS}" \
@@ -42,7 +42,8 @@ if [ "$*" = 'app' ]; then
         --create \
         /data/map.osm
 
-    tail -f /dev/null
+    # tail -f /dev/null
+    npm run dev
 else
     exec "$@"
 fi
