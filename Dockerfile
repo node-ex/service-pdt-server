@@ -33,8 +33,13 @@ RUN echo '>>> Cleaning up' \
 FROM base_ as dev_
 
 # Copy and setup Docker healthcheck.
-# TODO: ...
+COPY healthcheck/docker-healthcheck /usr/local/bin/
+RUN chmod a+rx /usr/local/bin/docker-healthcheck
 
 # Copy and setup Docker entrypoint.
 COPY ./entrypoint/docker-entrypoint.sh /usr/local/bin/
 RUN chmod a+rx /usr/local/bin/docker-entrypoint.sh
+
+# Copy and setup other executables/scripts.
+COPY ./bin/wait-for-it.sh /usr/local/bin/
+RUN chmod a+rx /usr/local/bin/wait-for-it.sh

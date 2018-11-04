@@ -7,6 +7,18 @@ set -o pipefail
 if [ "$*" = 'app' ]; then
     # docker-entrypoint-parallel.sh &
 
+    echo '>>> Wait until PostgreSQL is ready to accept connections.'
+    wait-for-it.sh \
+        --strict \
+        --quiet \
+        --timeout=0 \
+        --host="${DOCKER_CONTAINER_POSTGIS}" \
+        --port=5432 \
+        -- \
+        echo '>>> External PostgreSQL is ready.'
+
+    # Execute commands that require PostgreSQL to be ready to accept connections.
+
     export PGPASSWORD="${POSTGRES_PASSWORD:-}"
     echo '>>> Creating database.'
     createdb \

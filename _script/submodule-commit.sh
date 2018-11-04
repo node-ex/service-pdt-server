@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-set -Eeu
+set -eu
+set -E
+# set -x
+# set -o pipefail
 
-# Pull changes for the submodule's branch.
+echo ">>> Pull the submodule."
 git pull
 
 changes="$(git status --short)"
 
-# Test for existance of files to stage.
+echo '>>> Test for existance of files to stage.'
 if [ -z "${changes}" ]; then
     exit 0
 fi
@@ -14,7 +17,7 @@ fi
 echo ">>> Type the commit message, followed by [ENTER]:"
 read -r commit_message
 
-# Stage and commit submodule's files.
+echo '>>> Stage and commit the submodule.'
 git add .
 git commit -m "${commit_message}"
 
@@ -22,12 +25,12 @@ submodule_name="$(basename ${PWD})"
 submodule_declared_branch="$(cd .. && git config -f .gitmodules submodule.${submodule_name}.branch)"
 submodule_actual_branch="$(git symbolic-ref --short HEAD)"
 
-# Test for a branch name match.
+echo '>>> Test for a submodule branch name match.'
 if [ "${submodule_declared_branch}" != "${submodule_actual_branch}" ]; then
     exit 0
 fi
 
-# Stage and commit superproject's submodule changes.
+echo '>>> Stage and commit superproject.'
 cd ..
 git stash || true
 git add "${submodule_name}"

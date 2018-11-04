@@ -2,8 +2,8 @@ version: "3.7"
 
 services:
   server-dummy:
-    container_name: ${DOCKER_REPOSITORY_USERNAME}-${DOCKER_REPOSITORY_NAME}
-    image: ${DOCKER_REPOSITORY_USERNAME}/${DOCKER_REPOSITORY_NAME}:latest
+    container_name: ${DOCKER_REPOSITORY_USERNAME}-${DOCKER_REPOSITORY_NAME}-dev
+    image: ${DOCKER_REPOSITORY_USERNAME}/${DOCKER_REPOSITORY_NAME}-dev:latest
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -23,12 +23,12 @@ services:
         target: /data
     env_file:
       - ./.env
-    # healthcheck:
-    #   test: ["CMD", "docker-healthcheck"]
-    #   interval: 2m
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 1m
+    healthcheck:
+      test: ["CMD", "docker-healthcheck"]
+      interval: 2m
+      timeout: 10s
+      retries: 3
+      start_period: 1m
     stop_grace_period: 30s
     restart: always
 

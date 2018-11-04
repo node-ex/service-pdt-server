@@ -4,17 +4,17 @@ set -E
 # set -x
 # set -o pipefail
 
+# Create .env file, if it does not exist.
+./_script/env-create-dev.sh
+
+# Load environment variables from .env .
+$(sed 's/^/export /g' .env)
+
+echo ">>> Container down: ${DOCKER_REPOSITORY_USERNAME}-${DOCKER_REPOSITORY_NAME}-dev ."
 docker-compose \
   --file docker-compose.dev.yml \
   down \
-    --timeout 0
+    --timeout 0 || true
 
-# Remove dummy Docker volumes.
-bash -c "$(
-cat <<'EOF'
-
-$(sed 's/^/export /g' .env)
-docker volume rm $(docker volume ls --quiet | grep --regexp "${DOCKER_REPOSITORY_USERNAME}-${DOCKER_REPOSITORY_NAME}-dummy-.*") 2> /dev/null
-
-EOF
-)"
+echo '>>> Remove Docker volumes, if there are any.'
+docker volume rm $(docker volume ls --quiet | grep --regexp "${DOCKER_REPOSITORY_USERNAME}-${DOCKER_REPOSITORY_NAME}-dev-.*") 2> /dev/null || true
