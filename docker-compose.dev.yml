@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  server-dummy:
+    container_name: ${DOCKER_REPOSITORY_USERNAME}-${DOCKER_REPOSITORY_NAME}
+    image: ${DOCKER_REPOSITORY_USERNAME}/${DOCKER_REPOSITORY_NAME}:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    entrypoint: docker-entrypoint.sh
+    command: app
+    init: true
+    # ports:
+    #   - target: 5432
+    #     published: 5432
+    #     protocol: tcp
+    #     mode: host
+    networks:
+      - shared
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data
+    env_file:
+      - ./.env
+    # healthcheck:
+    #   test: ["CMD", "docker-healthcheck"]
+    #   interval: 2m
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 1m
+    stop_grace_period: 30s
+    restart: always
+
+# volumes:
+#   data:
+#     name: ${DOCKER_REPOSITORY_USERNAME}-${DOCKER_REPOSITORY_NAME}-data
+
+networks:
+  shared:
+    name: ${DOCKER_NETWORK}
