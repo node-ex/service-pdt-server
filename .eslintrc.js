@@ -54,20 +54,26 @@ module.exports = {
     'import/no-webpack-loader-syntax': 'off',
     'indent': ['error', 2],
     'linebreak-style': ['error', 'unix'],
-    'max-len': ['error', {
+    'max-len': ['warn', {
       code: 80,
       ignoreComments: false,
       ignoreTrailingComments: false
     }],
     'node/no-unpublished-require': 'off',
     'node/no-unsupported-features/es-syntax': 'off',
-    'no-console': 'off',
+    'no-console': 0,
+    'no-var': 2,
+    'prefer-const': ['error', {
+      destructuring: 'all',
+      ignoreReadBeforeAssign: false
+    }],
     'prettier/prettier': 'off',
     'quote-props': ['error', 'consistent-as-needed'],
     'quotes': ['error', 'single'],
     'semi': ['error', 'never'],
     'space-before-function-paren': ['error', 'never'],
-    'unicorn/filename-case': 'off'
+    'unicorn/filename-case': 'off',
+    'unicorn/no-abusive-eslint-disable': 0
   },
   settings: {}
 }

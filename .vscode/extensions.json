@@ -37,9 +37,9 @@
 		"PeterJausovec.vscode-docker",
 		// # Natural language
 		// "adamvoss.vscode-languagetool",
-        // "adamvoss.vscode-languagetool-en",
-        // "streetsidesoftware.code-spell-checker",
-        // "ban.spellright"
+    // "adamvoss.vscode-languagetool-en",
+    // "streetsidesoftware.code-spell-checker",
+    // "ban.spellright"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
