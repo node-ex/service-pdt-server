@@ -71,6 +71,7 @@ module.exports = {
     'prettier/prettier': 'off',
     'quote-props': ['error', 'consistent-as-needed'],
     'quotes': ['error', 'single'],
+    'security/detect-object-injection': 0,
     'semi': ['error', 'never'],
     'space-before-function-paren': ['error', 'never'],
     'unicorn/filename-case': 'off',

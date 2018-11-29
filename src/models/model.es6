@@ -65,10 +65,14 @@ class Model {
           select jsonb_build_object(
             'type', 'Feature',
             'id', osm_id,
-            'geometry', ST_AsGeoJSON(ST_Transform(pop.way, 4326), 15, 1)::jsonb,
+            'geometry', ST_AsGeoJSON(
+              ST_Transform(pop.way, 4326), 15, 1
+            )::jsonb,
           'properties', jsonb_build_object(
               'name', "name",
-              'center_point', ST_AsGeoJSON(ST_Transform(ST_Centroid(pop.way), 4326))::jsonb
+              'center_point', ST_AsGeoJSON(
+                ST_Transform(ST_Centroid(pop.way), 4326)
+              )::jsonb
           )
           ) as feature
           from planet_osm_polygon as pop

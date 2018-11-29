@@ -35,36 +35,38 @@ div.bench {
   widows: 20px;
 }
 
+$font-size-fa: 20px;
+$color-fa: white;
+$font-family-fa: 'Font Awesome 5 Free';
+
 div.bench::before {
-  font-size: 20px;
-  color: white;
-  font-family: 'Font Awesome 5 Free', sans-serif;
+  font-family: $font-family-fa, sans-serif;
+  font-size: $font-size-fa;
   font-weight: 900;
+  color: $color-fa;
   content: '\f6c0';
 }
 
 div.drinking_water::before {
-  font-size: 20px;
-  color: white;
-  font-family: 'Font Awesome 5 Free', sans-serif;
+  font-family: $font-family-fa, sans-serif;
+  font-size: $font-size-fa;
   font-weight: 900;
+  color: $color-fa;
   content: '\f043';
 }
 
 div.toilets::before {
-  font-size: 20px;
-  color: white;
-  font-family: 'Font Awesome 5 Free', sans-serif;
+  font-family: $font-family-fa, sans-serif;
+  font-size: $font-size-fa;
   font-weight: 900;
+  color: $color-fa;
   content: '\f71e';
-  border-color: black;
 }
 
 div.bus_stop::before {
-  font-size: 20px;
-  color: black;
-  font-family: 'Font Awesome 5 Free', sans-serif;
+  font-family: $font-family-fa, sans-serif;
+  font-size: $font-size-fa;
   font-weight: 900;
+  color: $color-fa;
   content: '\f207';
-  border-color: white;
 }

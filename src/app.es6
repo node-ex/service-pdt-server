@@ -6,10 +6,10 @@ const path = require('path')
 
 // Third-party packages
 const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
-const createError = require('http-errors')
+// const cookieParser = require('cookie-parser')
+// const createError = require('http-errors')
 const express = require('express')
-const logger = require('morgan')
+// const logger = require('morgan')
 const sassMiddleware = require('node-sass-middleware')
 
 // Routes

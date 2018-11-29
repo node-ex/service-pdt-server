@@ -346,37 +346,37 @@ async function drawBusMarkers(lng, lat) {
   })
 }
 
-async function drawPopulation(lng, lat) {
-  console.log('Getting..')
-  const reply = await axios.post('/data/population', {
-    lng,
-    lat
-  })
-  const geojson = reply.data
-  // const geojson = await requestAllParks()
+// async function drawPopulation(lng, lat) {
+//   console.log('Getting..')
+//   const reply = await axios.post('/data/population', {
+//     lng,
+//     lat
+//   })
+//   const geojson = reply.data
+//   // const geojson = await requestAllParks()
 
-  // await removeAll()
+//   // await removeAll()
 
-  window.sources.push('population')
+//   window.sources.push('population')
 
-  window.map.addSource('population', {
-    type: 'geojson',
-    data: geojson
-  })
+//   window.map.addSource('population', {
+//     type: 'geojson',
+//     data: geojson
+//   })
 
-  window.layers.push('population-polygons')
+//   window.layers.push('population-polygons')
 
-  window.map.addLayer({
-    id: 'population-polygons',
-    type: 'fill',
-    source: 'population',
-    paint: {
-      'fill-color': '#ff7f00', // '#ff7f00', // '#00ffcb',
-      'fill-opacity': 0.4
-    },
-    filter: ['==', '$type', 'Polygon']
-  })
-}
+//   window.map.addLayer({
+//     id: 'population-polygons',
+//     type: 'fill',
+//     source: 'population',
+//     paint: {
+//       'fill-color': '#ff7f00', // '#ff7f00', // '#00ffcb',
+//       'fill-opacity': 0.4
+//     },
+//     filter: ['==', '$type', 'Polygon']
+//   })
+// }
 
 async function requestSecrets() {
   const secrets = (await axios.get('/secret')).data
