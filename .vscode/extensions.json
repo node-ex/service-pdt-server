@@ -15,7 +15,8 @@
 		"editorconfig.editorconfig",
 		// # Programming and markup languages
 		// ## CSS, SASS, SCSS
-		"shinnn.stylelint",
+    "shinnn.stylelint",
+    "aeschli.vscode-css-formatter",
 		// ## HTML
 		"formulahendry.auto-rename-tag",
 		"formulahendry.auto-close-tag",

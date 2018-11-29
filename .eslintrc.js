@@ -43,6 +43,7 @@ module.exports = {
     'node',
     'prettier',
     'promise',
+    'pug',
     'security',
     'standard',
     'unicorn',

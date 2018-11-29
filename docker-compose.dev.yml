@@ -8,6 +8,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
       target: dev_
+    # command: tail -f /dev/null
     entrypoint: docker-entrypoint.sh
     command: app
     init: true

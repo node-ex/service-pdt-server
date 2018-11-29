@@ -1,8 +1,6 @@
 module.exports = function(api) {
   api.cache(true)
 
-  const sourceMaps = 'inline'
-
   const plugins = [
     // 'transform-object-rest-spread'
     'syntax-dynamic-import'
@@ -11,14 +9,16 @@ module.exports = function(api) {
   const presets = [['@babel/preset-env', { targets: { node: 'current' } }]]
 
   const env = {
-    test: {
-      presets: [['@babel/preset-env', { targets: { node: 'current' } }]],
-      plugins: ['babel-jest-assertions']
-    },
-    production: {
+    development: {
       plugins: [
         'source-map-support'
       ],
+      sourceMaps: 'inline'
+    },
+    test: {
+      plugins: ['babel-jest-assertions']
+    },
+    production: {
       ignore: [
         '**/__tests__/**',
         '**/*.spec.*'
@@ -27,7 +27,6 @@ module.exports = function(api) {
   }
 
   return {
-    sourceMaps,
     plugins,
     presets,
     env

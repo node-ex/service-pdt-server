@@ -14,7 +14,8 @@ RUN echo 'Installing essential packages.' \
     apt-get install --assume-yes --no-install-recommends --fix-missing --fix-broken \
         iputils-ping \
         postgresql-client \
-        osm2pgsql
+        osm2pgsql \
+        postgis
 
 RUN echo '>>> Cleaning up' \
     && \
@@ -70,7 +71,7 @@ RUN npm install
 
 # Runs tests.
 
-FROM development_ AS test_
+FROM dev_ AS test_
 
 ENV NODE_ENV='test'
 
@@ -82,7 +83,7 @@ COPY src ./src
 
 # Build the app.
 
-FROM development_ AS build_
+FROM dev_ AS build_
 
 COPY src ./src
 RUN npm run build
