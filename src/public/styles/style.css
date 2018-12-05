@@ -31,33 +31,34 @@ div.bench {
   widows: 20px; }
 
 div.bench::before {
+  font-family: "Font Awesome 5 Free", sans-serif;
   font-size: 20px;
-  color: white;
-  font-family: 'Font Awesome 5 Free', sans-serif;
   font-weight: 900;
+  color: white;
   content: '\f6c0'; }
 
 div.drinking_water::before {
+  font-family: "Font Awesome 5 Free", sans-serif;
   font-size: 20px;
-  color: white;
-  font-family: 'Font Awesome 5 Free', sans-serif;
   font-weight: 900;
+  color: white;
   content: '\f043'; }
 
 div.toilets::before {
+  font-family: "Font Awesome 5 Free", sans-serif;
   font-size: 20px;
-  color: white;
-  font-family: 'Font Awesome 5 Free', sans-serif;
   font-weight: 900;
-  content: '\f71e';
-  border-color: black; }
+  color: white;
+  content: '\f71e'; }
 
 div.bus_stop::before {
+  font-family: "Font Awesome 5 Free", sans-serif;
   font-size: 20px;
-  color: black;
-  font-family: 'Font Awesome 5 Free', sans-serif;
   font-weight: 900;
-  content: '\f207';
-  border-color: white; }
+  color: black;
+  content: '\f207'; }
+
+strong {
+  font-weight: bold; }
 
 /*# sourceMappingURL=style.css.map */

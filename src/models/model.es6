@@ -7,22 +7,21 @@ class Model {
       with pop as (
         select
           pop."name"
+          ,pop.osm_id
           ,ST_Transform(pop.way, 4326) as way
           ,ST_Transform(ST_Centroid(pop.way), 4326) as center_point
           ,sum(pdat.tot_p) as population
         from planet_osm_polygon pop
-        join population_geometry pgeo
+        join population_data_geometry pdat
           on st_dwithin(
             st_transform(pop.way, 3857),
-            st_transform(pgeo.geom, 3857),
+            st_transform(pdat.geom, 3857),
             0
           )
-        join population_data pdat
-          on pgeo.grd_newid = pdat.grd_newid
         where 1=1
           and pop.leisure = 'park'
           and pop."name" is not null
-        group by pop."name", pop.way
+        group by pop.osm_id, pop."name", pop.way
       )
       select jsonb_build_object(
         'type', 'FeatureCollection',
@@ -33,6 +32,7 @@ class Model {
           'type', 'Feature',
           'geometry', ST_AsGeoJSON(ST_Transform(pop.way, 4326), 15, 1)::jsonb,
           'properties', jsonb_build_object(
+            'id', pop.osm_id,
             'name', pop."name",
             'population', pop.population,
             'center_point', ST_AsGeoJSON(pop.center_point)::jsonb
@@ -45,62 +45,53 @@ class Model {
 
     try {
       const result = await pool.query(query)
-      console.log(result)
       const json = JSON.stringify(result.rows[0].json, undefined, 2)
-      console.log(json)
       return json
     } catch (error) {
       console.log(error.stack)
     }
   }
 
-  static async getParkWithPoint(lng, lat) {
+  static async getParkWithId(id) {
     const query = {
       text: `
+      select jsonb_build_object(
+        'type', 'FeatureCollection',
+        'features', jsonb_agg(features.feature)
+      ) as "json"
+      from (
         select jsonb_build_object(
-          'type', 'FeatureCollection',
-          'features', jsonb_agg(features.feature)
-        ) as "json"
-        from (
-          select jsonb_build_object(
-            'type', 'Feature',
-            'id', osm_id,
-            'geometry', ST_AsGeoJSON(
-              ST_Transform(pop.way, 4326), 15, 1
-            )::jsonb,
-          'properties', jsonb_build_object(
-              'name', "name",
-              'center_point', ST_AsGeoJSON(
-                ST_Transform(ST_Centroid(pop.way), 4326)
-              )::jsonb
-          )
-          ) as feature
-          from planet_osm_polygon as pop
-          where 1=1
-            and leisure = 'park'
-            and st_contains(
-              st_transform(pop.way, 4326),
-            st_setsrid(st_point($1, $2), 4326)
-            )
-        ) features;
+          'type', 'Feature',
+          'id', osm_id,
+          'geometry', ST_AsGeoJSON(
+            ST_Transform(pop.way, 4326), 15, 1
+          )::jsonb,
+        'properties', jsonb_build_object(
+            'name', "name",
+            'center_point', ST_AsGeoJSON(
+              ST_Transform(ST_Centroid(pop.way), 4326)
+            )::jsonb
+        )
+        ) as feature
+        from planet_osm_polygon as pop
+        where 1=1
+          and leisure = 'park'
+          and osm_id = $1
+      ) features;
       `,
-      values: [
-        lng,
-        lat
-      ]
+      values: [id]
     }
 
     try {
       const result = await pool.query(query)
       const json = JSON.stringify(result.rows[0].json, undefined, 2)
-      console.log(json)
       return json
     } catch (error) {
       console.log(error.stack)
     }
   }
 
-  static async getParkMarkers(lng, lat) {
+  static async getParkMarkers(id) {
     const query = {
       text: `
       with popo as (
@@ -111,13 +102,7 @@ class Model {
         from planet_osm_point popo, planet_osm_polygon pop
         where 1=1
           and pop.leisure = 'park'
-          and st_contains(
-            st_transform(pop.way, 4326),
-            st_setsrid(
-              st_point($1, $2),
-              4326
-            )
-          )
+          and pop.osm_id = $1
           and st_contains(
             pop.way,
             popo.way
@@ -135,32 +120,28 @@ class Model {
       from (
         select jsonb_build_object(
           'type', 'Feature',
-          'id', popo.osm_id,
           'geometry', ST_AsGeoJSON(ST_Transform(popo.way, 4326), 15, 1)::jsonb,
           'properties', jsonb_build_object(
+              'id', popo.osm_id,
               'marker', popo.marker
           )
         ) as feature
         from popo
       ) features;
       `,
-      values: [
-        lng,
-        lat
-      ]
+      values: [id]
     }
 
     try {
       const result = await pool.query(query)
       const json = JSON.stringify(result.rows[0].json, undefined, 2)
-      console.log(json)
       return json
     } catch (error) {
       console.log(error.stack)
     }
   }
 
-  static async getBusMarkers(lng, lat) {
+  static async getBusMarkers(id) {
     const query = {
       text: `
       with popo as (
@@ -172,47 +153,37 @@ class Model {
         from planet_osm_point popo, planet_osm_polygon pop
         where 1=1
           and pop.leisure = 'park'
-          and st_contains(
-            st_transform(pop.way, 4326),
-            st_setsrid(
-              st_point($1, $2),
-              4326
-            )
-          )
+          and pop.osm_id = $1
           and popo.highway = 'bus_stop'
           and st_dwithin(
             st_transform(pop.way, 3857),
             st_transform(popo.way, 3857),
             1000
           )
-      )
-      select jsonb_build_object(
-        'type', 'FeatureCollection',
-        'features', jsonb_agg(features.feature)
-      ) as "json"
-      from (
+        )
         select jsonb_build_object(
-          'type', 'Feature',
+          'type', 'FeatureCollection',
+        'features', jsonb_agg(features.feature)
+        ) as "json"
+        from (
+          select jsonb_build_object(
+            'type', 'Feature',
           'id', popo.osm_id,
           'geometry', ST_AsGeoJSON(ST_Transform(popo.way, 4326), 15, 1)::jsonb,
           'properties', jsonb_build_object(
               'marker', popo.marker,
               'name', popo."name"
-          )
-        ) as feature
-        from popo
-      ) features;
+            )
+          ) as feature
+          from popo
+        ) features;
       `,
-      values: [
-        lng,
-        lat
-      ]
+      values: [id]
     }
 
     try {
       const result = await pool.query(query)
       const json = JSON.stringify(result.rows[0].json, undefined, 2)
-      console.log(json)
       return json
     } catch (error) {
       console.log(error.stack)
@@ -270,7 +241,6 @@ class Model {
     try {
       const result = await pool.query(query)
       const json = JSON.stringify(result.rows[0].json, undefined, 2)
-      console.log(json)
       return json
     } catch (error) {
       console.log(error.stack)

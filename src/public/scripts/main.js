@@ -143,10 +143,18 @@ async function drawAllParks() {
 
   window.events['parks-all-polygons'] = {
     click: function(e) {
-      drawParkWithPoint(
-        e.lngLat.lng,
-        e.lngLat.lat
-      )
+      const id = window.map.queryRenderedFeatures(e.point)[0].properties.id
+
+      // const geojson = {
+      //   type: 'FeatureCollection',
+      //   features: [{
+      //     type: window.map.queryRenderedFeatures(e.point)[0].type,
+      //     geometry: window.map.queryRenderedFeatures(e.point)[0].geometry,
+      //     properties: window.map.queryRenderedFeatures(e.point)[0].properties
+      //   }]
+      // }
+
+      drawParkWithId(id)
     },
     mouseenter: function(e) {
       window.map.getCanvas().style.cursor = 'pointer'
@@ -158,7 +166,7 @@ async function drawAllParks() {
 
       popup
         .setLngLat(coordinates)
-        .setHTML(name + '<br>' + population)
+        .setHTML('<strong>' + name + '</strong><br> Citizen count:  ' + population)
         .addTo(window.map)
     },
     mouseleave: function() {
@@ -186,11 +194,8 @@ async function drawAllParks() {
   )
 }
 
-async function drawParkWithPoint(lng, lat) {
-  const reply = await axios.post('/data/park', {
-    lng,
-    lat
-  })
+async function drawParkWithId(id) {
+  const reply = await axios.get(`/data/park/${id}`)
   const geojson = reply.data
   // const geojson = await requestParkWithPoint(lng, lat)
 
@@ -261,18 +266,14 @@ async function drawParkWithPoint(lng, lat) {
     }
   )
 
-  await drawParkMarkers(lng, lat)
-  await drawBusMarkers(lng, lat)
+  await drawParkMarkers(id)
+  await drawBusMarkers(id)
   // await drawPopulation(lng, lat)
 }
 
-async function drawParkMarkers(lng, lat) {
-  const reply = await axios.post('/data/markers', {
-    lng,
-    lat
-  })
+async function drawParkMarkers(id) {
+  const reply = await axios.get(`/data/park/${id}/markers`)
   const geojson = reply.data
-  console.log(geojson)
 
   if (geojson.features === null) {
     return
@@ -280,7 +281,6 @@ async function drawParkMarkers(lng, lat) {
 
   geojson.features.forEach(function(point) {
     const el = document.createElement('div')
-    console.log(point.properties.marker)
     el.className = point.properties.marker
 
     const marker = new mapboxgl.Marker(el)
@@ -306,13 +306,9 @@ async function drawParkMarkers(lng, lat) {
   })
 }
 
-async function drawBusMarkers(lng, lat) {
-  const reply = await axios.post('/data/buses', {
-    lng,
-    lat
-  })
+async function drawBusMarkers(id) {
+  const reply = await axios.get(`/data/park/${id}/buses`)
   const geojson = reply.data
-  console.log(geojson)
 
   if (geojson.features === null) {
     return
@@ -320,7 +316,6 @@ async function drawBusMarkers(lng, lat) {
 
   geojson.features.forEach(function(point) {
     const el = document.createElement('div')
-    console.log(point.properties.marker)
     el.className = point.properties.marker
 
     const marker = new mapboxgl.Marker(el)
@@ -402,9 +397,9 @@ function initMap(secrets) {
 
 function initControls(secrets) {
   // Location search bar
-  window.map.addControl(new MapboxGeocoder({
-    accessToken: secrets.token
-  }))
+  // window.map.addControl(new MapboxGeocoder({
+  //   accessToken: secrets.token
+  // }))
 
   // Navigation controls
   window.map.addControl(new window.mapboxgl.NavigationControl())
@@ -418,10 +413,10 @@ function initControls(secrets) {
   }))
 
   // Coordinates display
-  window.map.on('mousemove', function(e) {
-    document.getElementById('info').innerHTML =
-        JSON.stringify(e.point) + '<br />' + JSON.stringify(e.lngLat)
-  })
+  // window.map.on('mousemove', function(e) {
+  //   document.getElementById('info').innerHTML =
+  //       JSON.stringify(e.point) + '<br />' + JSON.stringify(e.lngLat)
+  // })
 }
 
 async function main() {
@@ -436,5 +431,4 @@ async function main() {
   })
 }
 
-console.log('Hello')
 main()

@@ -67,6 +67,10 @@ div.bus_stop::before {
   font-family: $font-family-fa, sans-serif;
   font-size: $font-size-fa;
   font-weight: 900;
-  color: $color-fa;
+  color: black;
   content: '\f207';
+}
+
+strong {
+  font-weight: bold;
 }

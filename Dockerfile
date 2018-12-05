@@ -33,7 +33,7 @@ ENV APP_DIR='/app'
 
 WORKDIR ${APP_DIR}
 
-COPY package*.json ./
+COPY package.json ./
 
 # Copy and setup Docker healthcheck.
 COPY healthcheck/docker-healthcheck /usr/local/bin/
@@ -63,6 +63,7 @@ COPY *.js ./
 COPY .*.js ./
 COPY .*rc ./
 
+# RUN npm install --global npm@latest
 RUN npm install
 
 ##########

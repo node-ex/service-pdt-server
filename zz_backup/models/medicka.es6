@@ -37,7 +37,6 @@ class MedickaModel {
     try {
       const result = await pool.query(query)
       const json = JSON.stringify(result.rows[0].row_to_json, undefined, 2)
-      console.log(json)
       return json
     } catch (error) {
       console.log(error.stack)

@@ -5,26 +5,22 @@ exports.getAllParks = async(req, res, next) => {
   res.send(geojson)
 }
 
-exports.getParkWithPoint = async(req, res, next) => {
-  console.log(req.body)
-  const geojson = await Model.getParkWithPoint(req.body.lng, req.body.lat)
+exports.getParkWithId = async(req, res, next) => {
+  const geojson = await Model.getParkWithId(req.params.id)
   res.send(geojson)
 }
 
 exports.getParkMarkers = async(req, res, next) => {
-  console.log(req.body)
-  const geojson = await Model.getParkMarkers(req.body.lng, req.body.lat)
+  const geojson = await Model.getParkMarkers(req.params.id)
   res.send(geojson)
 }
 
 exports.getBusMarkers = async(req, res, next) => {
-  console.log(req.body)
-  const geojson = await Model.getBusMarkers(req.body.lng, req.body.lat)
+  const geojson = await Model.getBusMarkers(req.params.id)
   res.send(geojson)
 }
 
 exports.getPopulation = async(req, res, next) => {
-  console.log(req.body)
   const geojson = await Model.getPopulation(req.body.lng, req.body.lat)
   res.send(geojson)
 }
